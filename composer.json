@@ -1,23 +1,15 @@
 {
-    "name": ":vendor/:package_name",
-    "description": ":package_description",
+    "name": "neondigital/laravel-locale",
+    "description": "A way to handle international sites in Laravel 5",
     "keywords": [
-        ":vendor",
-        ":package_name"
+        "Neon Digital",
+        "Laravel Locale"
     ],
-    "homepage": "https://github.com/:vendor/:package_name",
+    "homepage": "https://github.com/neondigital/laravel-locale",
     "license": "MIT",
-    "authors": [
-        {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
-            "role": "Developer"
-        }
-    ],
     "require": {
-        "illuminate/support": "~5.1",
-        "php" : ">=5.3.0"
+        "laravel/framework": "5.2.*",
+        "php" : ">=5.5.9"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*",
@@ -26,12 +18,12 @@
     },
     "autoload": {
         "psr-4": {
-            ":vendor\\:package_name\\": "src"
+            "Neondigital\\LaravelLocale\\": "src",
         }
     },
     "autoload-dev": {
         "psr-4": {
-            ":vendor\\:package_name\\Test\\": "tests"
+            "Neondigital\\LaravelLocale\\Test\\": "tests"
         }
     },
     "scripts": {
