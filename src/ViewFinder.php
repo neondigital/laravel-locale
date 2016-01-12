@@ -4,19 +4,19 @@ namespace Neondigital\LaravelLocale;
 
 use View;
 
-class ViewFinder
+class ViewFinder implements ViewFinderInterface
 {
-    protected $view;
+    protected $app;
 
-    public function __construct($view)
+    public function __construct($app)
     {
-        $this->view = $view;
+        $this->app = $app;
     }
 
-    public function find($countryCode, $languageCode)
+    public function find($view, $countryCode, $languageCode)
     {
-        $basePath = base_path('resources/views/');
-        $viewPath = str_replace($basePath, '', $this->view->getPath());
+        $basePath = $this->app->basePath() . '/resources/views/';
+        $viewPath = str_replace($basePath, '', $view->getPath());
 
         if (!$viewPath) {
             return;
@@ -49,7 +49,7 @@ class ViewFinder
 
         foreach ($viewPathOptions as $path) {
             if (file_exists($path)) {
-                $this->view->setPath($path);
+                $view->setPath($path);
                 return;
             }
         }

@@ -10,6 +10,17 @@ use View;
 class LocaleServiceProvider extends ServiceProvider
 {
     /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'composing:*' => [
+            'Neondigital\LaravelLocale\Listeners\Composing',
+        ],
+    ];
+
+    /**
      * Register any other events for your application.
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
@@ -21,18 +32,9 @@ class LocaleServiceProvider extends ServiceProvider
 
         if (!$this->isLumen()) {
             $this->publishes([
-                $this->getConfigPath() => config_path('locale.php'),
+                $this->getConfigPath() => $this->app->make('path.config') . '/locale.php',
             ], 'config');
         }
-
-        $events->listen('composing:*', function ($view) {
-
-            $locale = $this->app['locale'];
-
-            $viewFinder = new ViewFinder($view);
-            $viewFinder->find($locale->getCountryCode(), $locale->getLanguageCode());
-            
-        });
     }
 
     /**
@@ -42,8 +44,12 @@ class LocaleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['locale'] = $this->app->share(function ($app) {
-            return new Locale();
+        $this->app->singleton(LocaleInterface::class, function ($app) {
+            return new Locale($app);
+        });
+
+        $this->app->bind(ViewFinderInterface::class, function ($app) {
+            return new ViewFinder($app);
         });
     }
 

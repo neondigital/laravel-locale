@@ -6,9 +6,20 @@ use App;
 use Config;
 use Request;
 
-class Locale
+class Locale implements LocaleInterface
 {
+    protected $app;
     protected $locale;
+
+    /**
+     * Construct
+     *
+     * @return void
+     */
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
 
     public function getAll()
     {

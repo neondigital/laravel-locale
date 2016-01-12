@@ -8,10 +8,11 @@
     "homepage": "https://github.com/neondigital/laravel-locale",
     "license": "MIT",
     "require": {
-        "laravel/framework": "5.2.*",
         "php" : ">=5.5.9"
     },
     "require-dev": {
+        "laravel/framework": "5.2.*",
+        "mockery/mockery": "0.9.*",
         "phpunit/phpunit" : "4.*",
         "scrutinizer/ocular": "~1.1",
         "squizlabs/php_codesniffer": "~2.3"
@@ -23,7 +24,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Neondigital\\LaravelLocale\\Test\\": "tests"
+            "Neondigital\\LaravelLocale\\Tests\\": "tests"
         }
     },
     "scripts": {
