@@ -66,14 +66,14 @@ class Locale implements LocaleInterface
 
         if (isset($locales[$locale])) {
             $this->locale = $locale;
-        } else {
-            $this->locale = Config::get('locale.default');
+
+            // Set default language
+            App::setLocale($this->getLanguageCode());
+
+            return $this->locale;
         }
 
-        // Set default language
-        App::setLocale($this->getLanguageCode());
-
-        return $this->locale;
+        return false;
     }
 
     public function url($path = null, $parameters = [], $secure = null)

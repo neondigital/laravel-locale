@@ -26,11 +26,11 @@ class LocaleDetection
             $countryCode = strtolower($record->country->isoCode);
         } catch (\GeoIp2\Exception\AddressNotFoundException $e) {
             $countryCode = Config::get('locale.default');
-        }      
+        }
 
         // Get language from browser
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $languageCode = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));           
+            $languageCode = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
         }
 
         // Do we have this country set-up?
@@ -40,7 +40,6 @@ class LocaleDetection
         if (isset($locales[$countryCode]) or isset($locales[$countryCode . '-' . $languageCode]) or isset($redirects[$countryCode])) {
             // Check to see if this is the current country, if not we need to redirect
             if ((Locale::getUrlPrefix() != $countryCode . '-' . $languageCode and Locale::getUrlPrefix() != $countryCode) or !Request::segment(1)) {
-
                 // Find the best locale based upon country and language
                 
                 if (isset($locales[$countryCode . '-' . $languageCode])) {
