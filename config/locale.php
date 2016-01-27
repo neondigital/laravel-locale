@@ -14,51 +14,27 @@ return [
 
         'gb' => [
             'name' => 'Great Britain',
-            'language_code' => 'en-GB',
+            'language_code' => 'en',
+            'country_code' => 'GB',
             'group' => 'europe',
-        ],
-
-        'za' => [
-            'name' => 'South Africa',
-            'language_code' => 'en-ZA',
-        ],
-
-        'us' => [
-            'name' => 'United States',
-            'language_code' => 'en-US',
         ],
 
         'ca-en' => [
             'name' => 'Canada (English)',
-            'country_code' => 'ca',
-            'language_code' => 'en-CA',
+            'language_code' => 'en',
+            'country_code' => 'CA',
         ],
 
         'ca-fr' => [
             'name' => 'Canada (Français)',
-            'country_code' => 'ca',
-            'language_code' => 'fr-CA',
-        ],
-
-        'be-nl' => [
-            'name' => 'België',
-            'country_code' => 'be',
-            'language_code' => 'nl-BE',
-            'group' => 'europe',
-        ],
-
-        'be-fr' => [
-            'name' => 'Belgique',
-            'country_code' => 'be',
-            'language_code' => 'fr-BE',
-            'group' => 'europe',
+            'language_code' => 'fr',
+            'country_code' => 'CA',
         ],
 
     ],
 
     'redirects' => [
         'ca' => 'ca-en',
-        'be' => 'be-fr',
     ],
 
 ];

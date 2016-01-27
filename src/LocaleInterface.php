@@ -6,7 +6,7 @@ interface LocaleInterface
 {
     public function getAll();
 
-    public function getAllByGroup();
+    public function getAllByGroup($group);
 
     public function getRedirects();
 

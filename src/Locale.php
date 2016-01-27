@@ -26,8 +26,9 @@ class Locale implements LocaleInterface
         return Config::get('locale.locales', []);
     }
 
-    public function getAllByGroup()
+    public function getAllByGroup($group)
     {
+        // TODO: 
         return [];
     }
 
@@ -49,12 +50,28 @@ class Locale implements LocaleInterface
 
     public function getCountryCode()
     {
-        return isset($this->getLocale()['country_code']) ? $this->getLocale()['country_code'] : $this->locale;
+        return $this->getLocale()['country_code'];
     }
 
     public function getLanguageCode()
     {
         return $this->getLocale()['language_code'];
+    }
+
+    public function getLocaleCode($separator = "-")
+    {
+        return $this->formatLocaleCode($this->getLocale(), $separator);
+    }
+
+    protected function formatLocaleCode($locale, $separator = "-")
+    {
+        $localeCode = $locale['language_code'];
+
+        if ($locale['country_code']) {
+            $localeCode .= $separator . $locale['country_code'];
+        }
+    
+        return $localeCode;
     }
 
     public function getUrlPrefix()
@@ -68,7 +85,7 @@ class Locale implements LocaleInterface
             $this->locale = $locale;
 
             // Set default language
-            App::setLocale($this->getLanguageCode());
+            App::setLocale($this->getLocaleCode());
 
             return $this->locale;
         }
@@ -91,12 +108,12 @@ class Locale implements LocaleInterface
         $html = '';
 
         // Tags for this page
-        $html .= '<meta http-equiv="content-language" content="'.$this->getLanguageCode().'">' . PHP_EOL;
+        $html .= '<meta http-equiv="content-language" content="'.$this->getLocaleCode().'">' . PHP_EOL;
 
         // Meta tags for alternate pages
         foreach ($this->getAll() as $locale => $info) {
             if ($locale != $this->locale) {
-                $html .= '<link rel="alternative" hreflang="'.$info['language_code'].'" href="'.$this->getAlternateUrl($locale).'">' . PHP_EOL;
+                $html .= '<link rel="alternative" hreflang="'.$this->formatLocaleCode($info).'" href="'.$this->getAlternateUrl($locale).'">' . PHP_EOL;
             }
         }
 
