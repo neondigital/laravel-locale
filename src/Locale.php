@@ -69,7 +69,7 @@ class Locale implements LocaleInterface
             // Set default language
             App::setLocale($this->locale->getLocaleCode());
 
-            return $this->locale->getLocaleCode();
+            return $this->locale->getPrefix();
         }
 
         return Config::get('locale.default');
