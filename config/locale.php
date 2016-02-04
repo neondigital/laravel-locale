@@ -2,7 +2,7 @@
 
 return [
 
-    'default' => 'gb',
+    'default' => 'uk',
 
     'country_detection' => true,   // From IP database
 
@@ -12,10 +12,11 @@ return [
 
     'locales' => [
 
-        'gb' => [
-            'name' => 'Great Britain',
+        'uk' => [
+            'name' => 'United Kingdom',
             'language_code' => 'en',
             'country_code' => 'GB',
+            'flag' => 'gb',
             'group' => 'europe',
         ],
 
@@ -23,12 +24,16 @@ return [
             'name' => 'Canada (English)',
             'language_code' => 'en',
             'country_code' => 'CA',
+            'flag' => 'ca',
+            'alternatives' => ['ca-fr' => 'Français']
         ],
 
         'ca-fr' => [
             'name' => 'Canada (Français)',
             'language_code' => 'fr',
             'country_code' => 'CA',
+            'flag' => 'ca',
+            'alternatives' => ['ca-en' => 'English']
         ],
 
     ],

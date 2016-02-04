@@ -29,6 +29,6 @@ class Composing
      */
     public function handle($view)
     {
-        $this->viewFinder->find($view, $this->locale->getCountryCode(), $this->locale->getLanguageCode());
+        $this->viewFinder->find($view, $this->locale->current()->getCountryCode(), $this->locale->current()->getLanguageCode());
     }
 }

@@ -10,11 +10,7 @@ interface LocaleInterface
 
     public function getRedirects();
 
-    public function getLocale();
-
-    public function getCountryCode();
-
-    public function getLanguageCode();
+    public function current();
 
     public function getUrlPrefix();
 

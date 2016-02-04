@@ -2,6 +2,7 @@
 
 namespace Neondigital\LaravelLocale;
 
+use Neondigital\LaravelLocale\Models\Locale as LocaleModel;
 use App;
 use Config;
 use Request;
@@ -23,13 +24,20 @@ class Locale implements LocaleInterface
 
     public function getAll()
     {
-        return Config::get('locale.locales', []);
+        return $this->getAllByGroup();
     }
 
-    public function getAllByGroup($group)
+    public function getAllByGroup($group = null)
     {
-        // TODO: 
-        return [];
+        $locales = [];
+
+        foreach (Config::get('locale.locales', []) as $prefix => $locale) {
+            if (!$group or $locale['group'] == $group) {
+                $locales[] = new LocaleModel($prefix, $locale);
+            }
+        }
+
+        return $locales;
     }
 
     public function getRedirects()
@@ -37,60 +45,34 @@ class Locale implements LocaleInterface
         return Config::get('locale.redirects', []);
     }
 
-    public function getLocale()
+    public function current()
     {
-        $locales = $this->getAll();
+        $locales = Config::get('locale.locales', []);
 
-        if (!isset($locales[$this->locale])) {
-            $this->locale = Config::get('locale.default');
+        if (!isset($this->locale)) {
+            $this->locale = new LocaleModel(Config::get('locale.default'), $locales[Config::get('locale.default')]);
         }
 
-        return isset($locales[$this->locale]) ? $locales[$this->locale] : [];
-    }
-
-    public function getCountryCode()
-    {
-        return $this->getLocale()['country_code'];
-    }
-
-    public function getLanguageCode()
-    {
-        return $this->getLocale()['language_code'];
-    }
-
-    public function getLocaleCode($separator = "-")
-    {
-        return $this->formatLocaleCode($this->getLocale(), $separator);
-    }
-
-    protected function formatLocaleCode($locale, $separator = "-")
-    {
-        $localeCode = $locale['language_code'];
-
-        if ($locale['country_code']) {
-            $localeCode .= $separator . $locale['country_code'];
-        }
-    
-        return $localeCode;
+        return $this->locale;
     }
 
     public function getUrlPrefix()
     {
         // Determine prefix from request
-        $locale = Request::segment(1);
+        $prefix = Request::segment(1);
 
-        $locales = $this->getAll();
+        $locales = Config::get('locale.locales', []);
 
-        if (isset($locales[$locale])) {
-            $this->locale = $locale;
+        if (isset($locales[$prefix])) {
+            $this->locale = new LocaleModel($prefix, $locales[$prefix]);
 
             // Set default language
-            App::setLocale($this->getLocaleCode());
+            App::setLocale($this->locale->getLocaleCode());
 
-            return $this->locale;
+            return $this->locale->getLocaleCode();
         }
 
-        return false;
+        return Config::get('locale.default');
     }
 
     public function url($path = null, $parameters = [], $secure = null)
@@ -108,12 +90,12 @@ class Locale implements LocaleInterface
         $html = '';
 
         // Tags for this page
-        $html .= '<meta http-equiv="content-language" content="'.$this->getLocaleCode().'">' . PHP_EOL;
+        $html .= '<meta http-equiv="content-language" content="'.$this->current()->getLocaleCode().'">' . PHP_EOL;
 
         // Meta tags for alternate pages
-        foreach ($this->getAll() as $locale => $info) {
+        foreach ($this->getAll() as $locale) {
             if ($locale != $this->locale) {
-                $html .= '<link rel="alternative" hreflang="'.$this->formatLocaleCode($info).'" href="'.$this->getAlternateUrl($locale).'">' . PHP_EOL;
+                $html .= '<link rel="alternative" hreflang="'.$locale->getLocaleCode().'" href="'.$this->getAlternateUrl($locale).'">' . PHP_EOL;
             }
         }
 
@@ -122,9 +104,15 @@ class Locale implements LocaleInterface
 
     public function getAlternateUrl($locale)
     {
+        if (is_string($locale)) {
+            $localeCode = $locale;
+        } else {
+            $localeCode = $locale->getLocaleCode();
+        }
+
         $segments = Request::segments();
         array_shift($segments);
-        $url = Request::root() . '/' . $locale;
+        $url = Request::root() . '/' . $localeCode;
 
         if (count($segments)) {
             $url .= '/' . implode('/', $segments);
@@ -134,6 +122,6 @@ class Locale implements LocaleInterface
             $url .= '?' . Request::getQueryString();
         }
 
-        return $url;        
+        return $url;
     }
 }

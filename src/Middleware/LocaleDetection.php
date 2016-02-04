@@ -34,7 +34,7 @@ class LocaleDetection
         }
 
         // Do we have this country set-up?
-        $locales = Locale::getAll();
+        $locales = Config::get('locale.locales', []);
         $redirects = Locale::getRedirects();
 
         if (isset($locales[$countryCode]) or isset($locales[$countryCode . '-' . $languageCode]) or isset($redirects[$countryCode])) {
