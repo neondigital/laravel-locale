@@ -12,6 +12,8 @@ interface LocaleInterface
 
     public function current();
 
+    public function setCurrent($prefix);
+
     public function getUrlPrefix();
 
     public function url($path = null, $parameters = [], $secure = null);

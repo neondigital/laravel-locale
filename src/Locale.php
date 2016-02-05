@@ -56,6 +56,11 @@ class Locale implements LocaleInterface
         return $this->locale;
     }
 
+    public function setCurrent($prefix) {
+        $locales = Config::get('locale.locales', []);
+        $this->locale = new LocaleModel($prefix, $locales[$prefix]);
+    }
+
     public function getUrlPrefix()
     {
         // Determine prefix from request
@@ -77,7 +82,7 @@ class Locale implements LocaleInterface
 
     public function url($path = null, $parameters = [], $secure = null)
     {
-        return url($this->getUrlPrefix() . '/' . $path, $parameters, $secure);
+        return url($this->current()->getPrefix() . '/' . $path, $parameters, $secure);
     }
 
     public function secureUrl($path, $parameters = [])
