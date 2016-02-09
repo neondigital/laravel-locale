@@ -56,6 +56,6 @@ class LocaleDetection
             }
         }
 
-        return return redirect(Locale::getAlternateUrl(Config::get('locale.default')));
+        return redirect(Locale::getAlternateUrl(Config::get('locale.default')));
     }
 }
