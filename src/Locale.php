@@ -72,7 +72,7 @@ class Locale implements LocaleInterface
             $this->locale = new LocaleModel($prefix, $locales[$prefix]);
 
             // Set default language
-            App::setLocale($this->locale->getLocaleCode());
+            App::setLocale($this->locale->getLanguageCode());
 
             return $this->locale->getPrefix();
         }
