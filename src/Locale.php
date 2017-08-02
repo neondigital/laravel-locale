@@ -116,11 +116,17 @@ class Locale implements LocaleInterface
         }
 
         $segments = Request::segments();
-        array_shift($segments);
+
         $url = Request::root() . '/' . $localeCode;
 
-        if (count($segments)) {
-            $url .= '/' . implode('/', $segments);
+        // If there is only one segment and its not the same as
+        if (count($segments) == 1) {
+            $url .= '/' . $segments[0];
+        } else {
+            array_shift($segments);
+            if (count($segments)) {
+                $url .= '/' . implode('/', $segments);
+            }
         }
 
         if (Request::getQueryString()) {
