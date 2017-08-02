@@ -26,9 +26,9 @@ class LocaleServiceProvider extends ServiceProvider
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function boot()
+    public function boot(DispatcherContract  $events)
     {
-        parent::boot();
+        parent::boot($events);
         if (!$this->isLumen()) {
             $this->publishes([
                 $this->getConfigPath() => $this->app->make('path.config') . '/locale.php',
