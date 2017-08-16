@@ -3,7 +3,7 @@
 namespace Neondigital\LaravelLocale\Middleware;
 
 use Closure;
-use Locale;
+use NeonLocale;
 
 class LocaleSet
 {
@@ -17,14 +17,14 @@ class LocaleSet
     public function handle($request, Closure $next)
     {
         $action = $request->route()->getAction();
-        $action['prefix'] = Locale::getUrlPrefix();
+        $action['prefix'] = NeonLocale::getUrlPrefix();
 
         if (!$action['prefix']) {
             abort(404);
         }
 
         if ($action['prefix'] != $request->segment(1)) {
-            return redirect(Locale::getAlternateUrl($action['prefix']));
+            return redirect(NeonLocale::getAlternateUrl($action['prefix']));
         }
 
         $request->route()->setAction($action);

@@ -4,7 +4,7 @@ namespace Neondigital\LaravelLocale\Middleware;
 
 use Closure;
 use Config;
-use Locale;
+use NeonLocale;
 use Request;
 
 class LocaleDetection
@@ -35,27 +35,27 @@ class LocaleDetection
 
         // Do we have this country set-up?
         $locales = Config::get('locale.locales', []);
-        $redirects = Locale::getRedirects();
+        $redirects = NeonLocale::getRedirects();
 
         if (isset($locales[$countryCode]) or isset($locales[$countryCode . '-' . $languageCode]) or isset($redirects[$countryCode])) {
             // Check to see if this is the current country, if not we need to redirect
-            if ((Locale::getUrlPrefix() != $countryCode . '-' . $languageCode and Locale::getUrlPrefix() != $countryCode) or !Request::segment(1)) {
+            if ((NeonLocale::getUrlPrefix() != $countryCode . '-' . $languageCode and NeonLocale::getUrlPrefix() != $countryCode) or !Request::segment(1)) {
                 // Find the best locale based upon country and language
                 
                 if (isset($locales[$countryCode . '-' . $languageCode])) {
-                    return redirect(Locale::getAlternateUrl($countryCode . '-' . $languageCode));
+                    return redirect(NeonLocale::getAlternateUrl($countryCode . '-' . $languageCode));
                 }
 
                 if (isset($locales[$countryCode])) {
-                    return redirect(Locale::getAlternateUrl($countryCode));
+                    return redirect(NeonLocale::getAlternateUrl($countryCode));
                 }
 
                 if (isset($redirects[$countryCode])) {
-                    return redirect(Locale::getAlternateUrl($redirects[$countryCode]));
+                    return redirect(NeonLocale::getAlternateUrl($redirects[$countryCode]));
                 }
             }
         }
 
-        return redirect(Locale::getAlternateUrl(Config::get('locale.default')));
+        return redirect(NeonLocale::getAlternateUrl(Config::get('locale.default')));
     }
 }
