@@ -23,10 +23,6 @@ class LocaleSet
             abort(404);
         }
 
-        if ($action['prefix'] != $request->segment(1)) {
-            return redirect(NeonLocale::getAlternateUrl($action['prefix']));
-        }
-
         $request->route()->setAction($action);
 
         return $next($request);
