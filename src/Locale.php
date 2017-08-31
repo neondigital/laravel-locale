@@ -45,6 +45,16 @@ class Locale implements LocaleInterface
         return Config::get('locale.redirects', []);
     }
 
+    public function getLocale($countryCode = 'GB')
+    {
+        $locales = Config::get('locale.locales', []);
+        foreach ($locales as $prefix => $locale) {
+            if ($locale['country_code'] == $countryCode) {
+                return new LocaleModel($prefix, $locale);
+            }
+        }
+    }
+
     public function current()
     {
         $locales = Config::get('locale.locales', []);
