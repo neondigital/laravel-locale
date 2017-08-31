@@ -59,17 +59,17 @@ class LocaleDetection
         }
 
 
-        $route = \Request::segment(1);
-        $routes = \Route::getRoutes();
-        $request = Request::create('{prefix}/' . $route);
 
-        try {
-            $routes->match($request);
-            return redirect($countryCode . '/' . $route);
-        } catch (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e) {
-            // You know nothing, jon snow.
-        }
+        // $route = \Request::segment(1);
+        // $routes = \Route::getRoutes();
+        // $request = Request::create('{prefix}/' . $route);
 
-        return redirect(NeonLocale::getAlternateUrl(Config::get('locale.default')));
+        // if ($route != $countryCode) {
+        //     try {
+        //         return redirect($countryCode . '/' . $route);
+        //     } catch (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e) {
+        //         // You know nothing, jon snow.
+        //     }
+        // }
     }
 }
