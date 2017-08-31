@@ -7,6 +7,7 @@ use Config;
 use NeonLocale;
 use Request;
 
+
 class LocaleDetection
 {
     /**
@@ -28,6 +29,7 @@ class LocaleDetection
             $countryCode = Config::get('locale.default');
         }
 
+
         // Get language from browser
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $languageCode = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
@@ -38,10 +40,10 @@ class LocaleDetection
         $redirects = NeonLocale::getRedirects();
 
         if (isset($locales[$countryCode]) or isset($locales[$countryCode . '-' . $languageCode]) or isset($redirects[$countryCode])) {
+
             // Check to see if this is the current country, if not we need to redirect
             if ((NeonLocale::getUrlPrefix() != $countryCode . '-' . $languageCode and NeonLocale::getUrlPrefix() != $countryCode) or !Request::segment(1)) {
                 // Find the best locale based upon country and language
-                
                 if (isset($locales[$countryCode . '-' . $languageCode])) {
                     return redirect(NeonLocale::getAlternateUrl($countryCode . '-' . $languageCode));
                 }
@@ -54,6 +56,18 @@ class LocaleDetection
                     return redirect(NeonLocale::getAlternateUrl($redirects[$countryCode]));
                 }
             }
+        }
+
+
+        $route = \Request::segment(1);
+        $routes = \Route::getRoutes();
+        $request = Request::create('{prefix}/' . $route);
+
+        try {
+            $routes->match($request);
+            return redirect($countryCode . '/' . $route);
+        } catch (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e) {
+            // You know nothing, jon snow.
         }
 
         return redirect(NeonLocale::getAlternateUrl(Config::get('locale.default')));
