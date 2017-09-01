@@ -53,6 +53,7 @@ class Locale implements LocaleInterface
                 return new LocaleModel($prefix, $locale);
             }
         }
+        return new LocaleModel(Config::get('locale.default'), $locales[Config::get('locale.default')]);
     }
 
     public function current()
