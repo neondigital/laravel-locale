@@ -49,7 +49,18 @@ class Locale implements LocaleInterface
     {
         $locales = Config::get('locale.locales', []);
         foreach ($locales as $prefix => $locale) {
-            if ($locale['country_code'] == $countryCode) {
+            if ($locale['country_code'] == strtoupper($countryCode)) {
+                return new LocaleModel($prefix, $locale);
+            }
+        }
+        return new LocaleModel(Config::get('locale.default'), $locales[Config::get('locale.default')]);
+    }
+
+    public function getLocaleByPrefix($prefix)
+    {
+        $locales = Config::get('locale.locales', []);
+        foreach ($locales as $localePrefix => $locale) {
+            if ($localePrefix == $prefix) {
                 return new LocaleModel($prefix, $locale);
             }
         }
