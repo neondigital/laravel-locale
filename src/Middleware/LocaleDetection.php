@@ -33,6 +33,8 @@ class LocaleDetection
         // Get language from browser
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $languageCode = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+        } else {
+            $languageCode = null;
         }
 
         // Do we have this country set-up?
