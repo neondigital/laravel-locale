@@ -19,6 +19,7 @@ class LocaleDetection
      */
     public function handle($request, Closure $next)
     {
+
         // Get country code from IP address
         $reader = new \GeoIp2\Database\Reader(storage_path('geoip2/GeoLite2-Country.mmdb'));
 
@@ -27,6 +28,10 @@ class LocaleDetection
             $countryCode = strtolower($record->country->isoCode);
         } catch (\GeoIp2\Exception\AddressNotFoundException $e) {
             $countryCode = Config::get('locale.default');
+        }
+
+        if ($request->user()) {
+            $countryCode = $request->user()->getLocale();
         }
 
         // Get language from browser
@@ -39,6 +44,7 @@ class LocaleDetection
         // Do we have this country set-up?
         $locales = Config::get('locale.locales', []);
         $redirects = NeonLocale::getRedirects();
+
 
         if (isset($locales[$countryCode]) or isset($locales[$countryCode . '-' . $languageCode]) or isset($redirects[$countryCode])) {
             // Check to see if this is the current country, if not we need to redirect
