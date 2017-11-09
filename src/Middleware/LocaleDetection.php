@@ -30,8 +30,6 @@ class LocaleDetection
             $countryCode = Config::get('locale.default');
         }
 
-        \Log::debug($request->user());
-
         if ($request->user() && $request->user()->getLocale()) {
             \Log::debug($request->user()->getLocale());
             $countryCode = $request->user()->getLocale();
