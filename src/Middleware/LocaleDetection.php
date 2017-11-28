@@ -31,11 +31,8 @@ class LocaleDetection
         }
 
         if ($request->user() && $request->user()->getLocale()) {
-            \Log::debug($request->user()->getLocale());
             $countryCode = $request->user()->getLocale();
         }
-
-        \Log::debug($countryCode);
 
         // Get language from browser
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
